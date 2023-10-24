@@ -1,5 +1,5 @@
 import '../styles/main.css';
-import { Dispatch, ReactElement, SetStateAction, useState} from 'react';
+import {Dispatch, ReactElement, SetStateAction, useEffect, useState} from 'react';
 import { ControlledInput } from './ControlledInput';
 import { mockData } from '../mockedJson';
 
@@ -61,6 +61,11 @@ export function REPLInput(props : REPLInputProps) {
       else if(keyWord == "view" && inputArray.length === 1) {
         if(props.isLoaded) {
           // Checks if the file only has empty values or is completely empty
+          fetch("http://localhost:2323/viewcsv")
+          .then(r => r.json())
+          .then(response =>{
+            props.setFileData(response["data"])
+          })
           if(checkIfFileEmpty()) {
             finalOutput = [["You are viewing an empty file"]]
           }
@@ -102,26 +107,30 @@ export function REPLInput(props : REPLInputProps) {
      */
     function load(fileName: string, hasHeaderString: string) {
       var output;
-      // Checks if the filepath exists in the mockDatas
-      if (mockData.has(fileName)) {
-        props.setFileData(mockData.get(fileName) || [[]])
-        props.setIsLoaded(true)
+      if (hasHeaderString == "with_header") {
+        props.setHasHeader(true)
+      } else if (hasHeaderString == "without_header") {
+        props.setHasHeader(false)
+      } else {
+        return [["Please enter a valid command"]]
+      }
+
+      fetch("http://localhost:2323/loadcsv?filepath=" + fileName + "&header=" + props.hasHeader.toString())
+      .then(r => r.json())
+      .then((response) => {
+        props.setIsLoaded(response["result"] == "success")
+      })
+      .catch(e => console.log(e))
+
+      if (props.isLoaded) {
+        //props.setFileData(mockData.get(fileName) || [[]])
         output = [["Loaded file " + fileName + " successfully"]]
       } else {
         output = [["File " + fileName + " not found"]]
       }
-      // Checks if the user says the file has a header or not
-      if(hasHeaderString == "with_header") {
-        props.setHasHeader(true)
-      }
-      else if(hasHeaderString == "without_header") {
-        props.setHasHeader(false)
-      }
-      else {
-        output = [["Please enter a valid command"]]
-      }
       return output
     }
+
     /**
      * The function deals with searching the file given a column specification or not
      * @param inputArray is the input given by the user
