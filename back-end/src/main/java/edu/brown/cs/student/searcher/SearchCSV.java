@@ -78,7 +78,13 @@ public class SearchCSV {
       if (header) {
         for (int i = 1; i < parsed_strings.size(); ++i) {
           if (parsed_strings.get(i).get(col_number).equals(this.search_val)) {
-            return_locs.add(new Location(i - 1, col_number));
+            if (header){
+              return_locs.add(new Location(i, col_number));
+            }
+            else{
+              return_locs.add(new Location(i - 1, col_number));
+            }
+            
           }
         }
       } else {
