@@ -130,6 +130,12 @@ export function REPLInput(props: REPLInputProps) {
         document.getElementById("command-box")!.focus();
       }
     }
+    else if(event.key === "ArrowUp") {
+      document.getElementById("command-history")!.scrollBy(0, -40)
+    }
+    else if(event.key === "ArrowDown") {
+      document.getElementById("command-history")!.scrollBy(0, 40)
+    }
   });
 
   return (
