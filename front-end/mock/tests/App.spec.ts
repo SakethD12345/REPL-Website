@@ -308,7 +308,7 @@ test('search a file with a column name and column index', async ({ page }) => {
  */
 test('search a file with invalid column indexes', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header');
+  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file RealFilePath1 successfully`
@@ -322,7 +322,7 @@ test('search a file with invalid column indexes', async ({ page }) => {
   await expect(page.getByLabel("Command history")).toContainText(mock_input2);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('search 10 Jack');
+  await page.getByLabel("Command input").fill('search 10 Jack mock');
   await page.getByRole("button").click();
 
   const mock_input3 = `The specified column is not present`
@@ -334,7 +334,7 @@ test('search a file with invalid column indexes', async ({ page }) => {
  */
 test('load and view a file with a weird shape', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file FilePathWeirdShape without_header');
+  await page.getByLabel("Command input").fill('load_file FilePathWeirdShape without_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file FilePathWeirdShape successfully`
@@ -353,7 +353,7 @@ test('load and view a file with a weird shape', async ({ page }) => {
  */
 test('load switch mode ane then reload', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header');
+  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file RealFilePath1 successfully`
@@ -367,7 +367,7 @@ test('load switch mode ane then reload', async ({ page }) => {
   await expect(page.getByLabel("Command history")).toContainText(mock_input2);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath2 without_header');
+  await page.getByLabel("Command input").fill('load_file RealFilePath2 without_header mock');
   await page.getByRole("button").click();
 
   const mock_input3 = `Command: load_file RealFilePath2 without_header Output: Loaded file RealFilePath2 successfully`
@@ -379,7 +379,7 @@ test('load switch mode ane then reload', async ({ page }) => {
  */
 test('load then view then switch mode then review', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header');
+  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file RealFilePath1 successfully`
@@ -400,7 +400,7 @@ test('load then view then switch mode then review', async ({ page }) => {
   await expect(page.getByLabel("Command history")).toContainText(mock_input3);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('view');
+  await page.getByLabel("Command input").fill('view mock');
   await page.getByRole("button").click();
 
   const mock_input4 = `Command: view Output: Names`
@@ -412,14 +412,14 @@ test('load then view then switch mode then review', async ({ page }) => {
  */
 test('load then search then switch mode then search', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header');
+  await page.getByLabel("Command input").fill('load_file RealFilePath1 with_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file RealFilePath1 successfully`
   await expect(page.getByLabel("Command history")).toContainText(mock_input);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('search Jack');
+  await page.getByLabel("Command input").fill('search Jack mock');
   await page.getByRole("button").click();
 
   const mock_input2 = `Jack`
@@ -433,7 +433,7 @@ test('load then search then switch mode then search', async ({ page }) => {
   await expect(page.getByLabel("Command history")).toContainText(mock_input3);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('search Jack');
+  await page.getByLabel("Command input").fill('search Jack mock');
   await page.getByRole("button").click();
 
   const mock_input4 = `Command: search Jack Output: Names`
@@ -471,14 +471,14 @@ test('switching mode back and forth', async ({ page }) => {
  */
 test('Typos and wrong commands', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file RealFilePath1');
+  await page.getByLabel("Command input").fill('load_file RealFilePath1 mock');
   await page.getByRole("button").click();
 
   const mock_input = `Please enter a valid command`
   await expect(page.getByLabel("Command history")).toContainText(mock_input);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load RealFilePath1 with header');
+  await page.getByLabel("Command input").fill('load RealFilePath1 with header mock');
   await page.getByRole("button").click();
 
   const mock_input2 = `Please enter a valid command`
@@ -518,21 +518,21 @@ test('Typos and wrong commands', async ({ page }) => {
  */
 test('Viewing and searching a file with one row and no header', async ({ page }) => {
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('load_file FilePathOneRow without_header');
+  await page.getByLabel("Command input").fill('load_file FilePathOneRow without_header mock');
   await page.getByRole("button").click();
 
   const mock_input = `Loaded file FilePathOneRow successfully`
   await expect(page.getByLabel("Command history")).toContainText(mock_input);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('view');
+  await page.getByLabel("Command input").fill('view mock');
   await page.getByRole("button").click();
 
   const mock_input2 = `Mahomes`
   await expect(page.getByLabel("Command history")).toContainText(mock_input2);
 
   await page.getByLabel("Command input").click();
-  await page.getByLabel("Command input").fill('search Wilson');
+  await page.getByLabel("Command input").fill('search Wilson mock');
   await page.getByRole("button").click();
 });
 

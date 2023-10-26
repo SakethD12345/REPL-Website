@@ -1,5 +1,5 @@
 import {Simulate} from "react-dom/test-utils";
-import {mockData} from "../../tests/mockedJson";
+import {mockData} from "../../mocked-data/mockedJson";
 import input = Simulate.input;
 
 export interface REPLFunction {
