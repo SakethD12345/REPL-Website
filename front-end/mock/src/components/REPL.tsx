@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import {Dispatch, ReactElement, SetStateAction, useState} from 'react';
 import '../styles/main.css';
 import { REPLHistory } from './REPLHistory';
 import { REPLInput } from './REPLInput';
 
 export default function REPL() {
-  const [history, setHistory] = useState<string[]>([])
-  const [data, setData] = useState<string[][] | undefined>();
+  const [history, setHistory] =
+      useState<ReactElement[]>([])
+  const [data, setData] =
+      useState<string[][] | undefined>();
+  const [isLoaded, setIsLoaded] =
+      useState<boolean>(false)
 
   return (
     <div className="repl"> 
       <REPLHistory history ={history}/>
       <hr></hr>
-      <REPLInput history={history} setHistory={setHistory} data={data} setData={setData}/>
+      <REPLInput history={history} setHistory={setHistory} data={data} setData={setData}
+                 isLoaded={isLoaded} setIsLoaded={setIsLoaded}/>
     </div>
   );
 }

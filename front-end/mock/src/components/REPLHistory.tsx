@@ -1,7 +1,8 @@
 import '../styles/main.css';
+import {ReactElement} from "react";
 
 interface REPLHistoryProps{
-    history: string[]
+    history: ReactElement[]
 }
 export function REPLHistory(props : REPLHistoryProps) {
     return (

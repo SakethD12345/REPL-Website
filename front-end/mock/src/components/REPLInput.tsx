@@ -1,12 +1,13 @@
 import "../styles/main.css";
-import { Dispatch, SetStateAction, useState } from "react";
+import {Dispatch, ReactElement, SetStateAction, useState} from "react";
 import { ControlledInput } from "./ControlledInput";
 import { map } from "./Parser";
+import {REPLFunction, REPLFunctionMap} from "./REPLFunction";
 
 //sets input props
 interface REPLInputProps {
-  history: string[];
-  setHistory: Dispatch<SetStateAction<string[]>>;
+  history: ReactElement[]
+  setHistory: Dispatch<SetStateAction<ReactElement[]>>
   data: string[][] | undefined;
   setData: Dispatch<SetStateAction<string[][] | undefined>>;
   isLoaded: boolean;
@@ -30,104 +31,54 @@ export function REPLInput(props: REPLInputProps) {
   //handleSubmit is run every time a button is pressed
   function handleSubmit(commandString: string) {
     var inputArray = commandString.split(" ");
-    //when load_file is contained within the command line
-    if (inputArray[0] == "load_file") {
-      fp = inputArray[1];
-      //check for validity
-      let fileLoaded;
-      fetch(
-        "http://localhost:2323/loadcsv?filepath=" + fp + "&header=false"
-
-        //props.hasHeader.toString()
-      )
-        .then((r) => r.json())
-        .then((response) => {
-          fileLoaded = response["result"] == "success";
-          if (!fileLoaded) {
-            //add to history
-            props.setHistory([...props.history, "File not found!"]);
-          } else {
-            if (isBrief) {
-              //add to history
-              props.setHistory([...props.history, "File successfully loaded."]);
-            } else {
-              props.setHistory([
-                ...props.history,
-                "Command: " + commandString,
-                "Output: " + fp + " successfully loaded",
-              ]);
-            }
-            //props.setIsLoaded(fileLoaded);
-            setFilePath(fp);
-            //props.setData(map.get(fp));     FIX THIS
-            fetch("http://localhost:2323/viewcsv")
-              .then((r) => r.json())
-              .then((response) => {
-                props.setData(response["data"]);
-              });
-          }
-        })
-        .catch((e) => console.log(e));
-      setCommandString("");
+    // Deals with switching the mode between brief and verbose
+    var command = inputArray[0]
+    if (command == "mode") {
+      handleMode()
     }
-
-    //if view is in the command line
-    if (commandString.startsWith("view")) {
-      if (filePath.length == 0) {
-        props.setHistory([...props.history, "No file loaded!"]);
-      } else {
-        if (!isBrief && props.data) {
-          //print all to history
-          const newData = props.data.map((row) => row.toString());
-          props.setHistory([
-            ...props.history,
-            "--------",
-            "Command: " + commandString,
-            "Output:",
-            ...newData,
-          ]);
-        } else if (props.data) {
-          //print brief to history
-          const newData = props.data.map((row) => row.toString());
-          props.setHistory([...props.history, "--------", ...newData]);
-        }
-      }
-      setCommandString("");
+    else if (REPLFunctionMap.has(command)) {
+      var commandFunction = REPLFunctionMap.get(command)
+      var result = commandFunction(inputArray)
+      addOutput(result)
     }
-
-    if (commandString.startsWith("search")) {
-      //set variables
-      const searchTerms = commandString.split(" ");
-      val = searchTerms[1];
-      col = searchTerms[2];
-      fetch("http://localhost:2323/searchcsv?find=" + val + "&col=" + col)
-        .then((r) => {
-          console.log(r);
-          return r.json();
-        })
-        .then((response) => {
-          const newData = response["data"].map((row: { toString: () => any }) =>
-            row.toString()
-          );
-          if (!isBrief) {
-            props.setHistory([
-              ...props.history,
-              "--------",
-              "Command: " + commandString,
-              "Output:",
-              newData,
-            ]);
-          } else {
-            props.setHistory([...props.history, "--------", newData]);
-          }
-        })
-        .catch((e) => console.log(e));
-      setCommandString("");
+    else {
+      props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
     }
   }
 
   function handleMode() {
     setMode(!isBrief);
+  }
+
+  /**
+   * This function builds a html table given the fileData or just the output that should be displayed
+   * @param result is the 2d string array that will be converted to a html table
+   * @returns a html table as a string
+   */
+  function buildResultTable(result: string[][]) {
+    var tableString = "<table>";
+    for (const row of result) {
+      let rowString = "<tr>";
+      for (const value of row) {
+        rowString += "<td>" + value + "</td>";
+      }
+      rowString += "</tr>";
+      tableString += rowString;
+    }
+    tableString += "</table>";
+    var returnTable = <div dangerouslySetInnerHTML={{ __html: tableString}}/>
+    if(isBrief) {
+      return returnTable
+    }
+    else {
+      return (<div><p>Command: <br></br>{commandString}{" "}</p><p>Output: {returnTable} </p></div>)
+    }
+  }
+
+  function addOutput(result: Promise<string[][]>) {
+    result
+    .then(r => buildResultTable(r))
+        .then(response => props.setHistory([...props.history, response]))
   }
 
   /**
