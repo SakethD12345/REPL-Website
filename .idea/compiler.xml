@@ -6,6 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+      </profile>
+      <profile name="Annotation profile for moshi" enabled="true">
+        <sourceOutputDir name="../server-ssdhulip-lyangmaccini/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../server-ssdhulip-lyangmaccini/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="moshi" />
       </profile>
     </annotationProcessing>
