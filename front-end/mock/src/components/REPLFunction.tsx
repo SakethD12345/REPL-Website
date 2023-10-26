@@ -1,6 +1,7 @@
 export interface REPLFunction {
   (args: string[]): Promise<string[][]>
 }
+let port = 3232;
 export const REPLFunctionMap = new Map<string, REPLFunction>
 REPLFunctionMap.set("load_file", load)
 REPLFunctionMap.set("view", view)
@@ -10,7 +11,7 @@ async function load(inputArray: string[]) {
   if(inputArray.length==2) {
     let fp = inputArray[1]
     return await fetch(
-        "http://localhost:2323/loadcsv?filename=" + fp + "&header=false"
+        "http://localhost:" + port + "/loadcsv?filename=" + fp + "&header=false"
         //props.hasHeader.toString()
     )
     .then((r) => r.json())
@@ -27,7 +28,7 @@ async function load(inputArray: string[]) {
     let fp = inputArray[1]
     let headerBoolean = inputArray[2] == "with_header"
     return await fetch(
-        "http://localhost:2323/loadcsv?filename=" + fp + "&header=" + headerBoolean
+        "http://localhost:"+ port +"/loadcsv?filename=" + fp + "&header=" + headerBoolean
         //props.hasHeader.toString()
     )
     .then((r) => r.json())
@@ -47,7 +48,7 @@ async function load(inputArray: string[]) {
 
 async function view(inputArray: string[]) {
   if(inputArray.length==1) {
-    return await fetch("http://localhost:2323/viewcsv")
+    return await fetch("http://localhost:"+ port +"/viewcsv")
     .then((r) => r.json())
     .then((response) => {
       if(!(response["result"] == "success")) {
@@ -66,7 +67,7 @@ async function view(inputArray: string[]) {
 async function search(inputArray: string[]) {
   if(inputArray.length==2) {
     let val = inputArray[1].replace("_", "%20")
-    return await fetch("http://localhost:2323/searchcsv?target=" + val)
+    return await fetch("http://localhost:"+ port +"/searchcsv?target=" + val)
     .then(r => r.json()
     )
     .then(response => {
@@ -81,7 +82,7 @@ async function search(inputArray: string[]) {
   else if(inputArray.length==3) {
     let val = inputArray[1].replace("_", "%20")
     let col = inputArray[2]
-    return await fetch("http://localhost:2323/searchcsv?target=" + val + "&identifier=" + col)
+    return await fetch("http://localhost:"+ port +"/searchcsv?target=" + val + "&identifier=" + col)
     .then(r => r.json())
     .then(response => {
       if(!(response["result"] == "success")) {
@@ -101,7 +102,7 @@ async function broadband(inputArray: string[]) {
   if(inputArray.length==3) {
     let state = inputArray[1]
     let county = inputArray[2]
-    return await fetch("http://localhost:2323/broadband?state=" + state + "&county=" + county)
+    return await fetch("http://localhost:"+ port+"/broadband?state=" + state + "&county=" + county)
     .then(r => r.json())
     .then(response => {
       if(!(response["result"] == "success")) {

@@ -1,7 +1,6 @@
 import "../styles/main.css";
 import {Dispatch, ReactElement, SetStateAction, useState} from "react";
 import { ControlledInput } from "./ControlledInput";
-import { map } from "./Parser";
 import {REPLFunction, REPLFunctionMap} from "./REPLFunction";
 
 //sets input props

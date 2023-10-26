@@ -35,7 +35,7 @@ public class Server {
         hasHeader = Boolean.TRUE;
         isLoaded = Boolean.FALSE;
 
-        int port = 2323;
+        int port = 3232;
 
         Spark.port(port);
         after((request, response) -> {
