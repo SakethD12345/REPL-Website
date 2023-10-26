@@ -71,7 +71,7 @@ async function search(inputArray: string[]) {
     )
     .then(response => {
       if(!(response["result"] == "success")) {
-        return [["Invalid search attempt"]]
+        return [[response["error"]]]
       }
       else {
         return response["data"]
