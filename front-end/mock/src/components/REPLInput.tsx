@@ -31,31 +31,33 @@ export function REPLInput(props: REPLInputProps) {
   //handleSubmit is run every time a button is pressed
   function handleSubmit(commandString: string) {
     var inputArray = commandString.split(" ");
-    // Deals with switching the mode between brief and verbose
     var command = inputArray[0]
+    // Deals with switching the mode between brief and verbose
     if (command == "mode") {
       handleMode()
     }
     else if (REPLFunctionMap.has(command)) {
       var commandFunction = REPLFunctionMap.get(command)
-      var result = commandFunction(inputArray)
-      addOutput(result)
+      if(commandFunction) {
+        var result = commandFunction(inputArray)
+        addOutput(result)
+      }
+      else {
+        props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
+      }
     }
     else {
       props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
     }
+    setCommandString("")
   }
 
   function handleMode() {
     setMode(!isBrief);
+    props.setHistory([...props.history, buildResultTableMode([["Mode switched"]])])
   }
 
-  /**
-   * This function builds a html table given the fileData or just the output that should be displayed
-   * @param result is the 2d string array that will be converted to a html table
-   * @returns a html table as a string
-   */
-  function buildResultTable(result: string[][]) {
+  function buildResultTableHelper(result: string[][]) {
     var tableString = "<table>";
     for (const row of result) {
       let rowString = "<tr>";
@@ -66,7 +68,15 @@ export function REPLInput(props: REPLInputProps) {
       tableString += rowString;
     }
     tableString += "</table>";
-    var returnTable = <div dangerouslySetInnerHTML={{ __html: tableString}}/>
+    return <div dangerouslySetInnerHTML={{ __html: tableString}}/>
+  }
+  /**
+   * This function builds a html table given the fileData or just the output that should be displayed
+   * @param result is the 2d string array that will be converted to a html table
+   * @returns a html table as a string
+   */
+  function buildResultTable(result: string[][]) {
+    var returnTable = buildResultTableHelper(result)
     if(isBrief) {
       return returnTable
     }
@@ -74,7 +84,15 @@ export function REPLInput(props: REPLInputProps) {
       return (<div><p>Command: <br></br>{commandString}{" "}</p><p>Output: {returnTable} </p></div>)
     }
   }
-
+  function buildResultTableMode(result: string[][]) {
+    var returnTable = buildResultTableHelper(result)
+    if(!isBrief) {
+      return returnTable
+    }
+    else {
+      return (<div><p>Command: <br></br>{commandString}{" "}</p><p>Output: {returnTable} </p></div>)
+    }
+  }
   function addOutput(result: Promise<string[][]>) {
     result
     .then(r => buildResultTable(r))
