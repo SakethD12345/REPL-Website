@@ -118,6 +118,20 @@ export function REPLInput(props: REPLInputProps) {
     }
   }
 
+  document.addEventListener("keydown", function(event) {
+    if(event.key === "Enter") {
+      handleSubmit(commandString)
+    }
+    else if(event.metaKey || event.ctrlKey) {
+      if(event.key === "b") {
+        handleMode();
+      }
+      else if(event.key === "i") {
+        document.getElementById("command-box")!.focus();
+      }
+    }
+  });
+
   return (
     <div className="repl-input">
       <fieldset>

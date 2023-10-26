@@ -8,9 +8,9 @@ function App() {
   return (
     <div className="App">
       <p className="App-header">
-        <h1>Mock</h1>
+        <h1>REPL</h1>
       </p>
-      <REPL />      
+      <REPL/>
     </div>
   );
 }
