@@ -65,7 +65,7 @@ async function view(inputArray: string[]) {
 
 async function search(inputArray: string[]) {
   if(inputArray.length==2) {
-    let val = inputArray[1]
+    let val = inputArray[1].replace("_", "%20")
     return await fetch("http://localhost:2323/searchcsv?target=" + val)
     .then(r => r.json()
     )
@@ -79,13 +79,13 @@ async function search(inputArray: string[]) {
   })
   }
   else if(inputArray.length==3) {
-    let val = inputArray[1]
+    let val = inputArray[1].replace("_", "%20")
     let col = inputArray[2]
     return await fetch("http://localhost:2323/searchcsv?target=" + val + "&identifier=" + col)
     .then(r => r.json())
     .then(response => {
       if(!(response["result"] == "success")) {
-        return [["Invalid search attempt"]]
+        return [[response["error"]]]
       }
       else {
         return response["data"]
