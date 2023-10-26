@@ -1,14 +1,19 @@
+import {Simulate} from "react-dom/test-utils";
+import {mockData} from "../../tests/mockedJson";
+import input = Simulate.input;
+
 export interface REPLFunction {
   (args: string[]): Promise<string[][]>
 }
 let port = 3232;
+let fp = "";
 export const REPLFunctionMap = new Map<string, REPLFunction>
 REPLFunctionMap.set("load_file", load)
 REPLFunctionMap.set("view", view)
 REPLFunctionMap.set("search", search)
 REPLFunctionMap.set("broadband", broadband)
 async function load(inputArray: string[]) {
-  if(inputArray.length==2) {
+  if (inputArray.length == 2) {
     let fp = inputArray[1]
     return await fetch(
         "http://localhost:" + port + "/loadcsv?filename=" + fp + "&header=false"
@@ -23,12 +28,11 @@ async function load(inputArray: string[]) {
         return [["File " + fp + " successfully loaded"]]
       }
     })
-  }
-  else if(inputArray.length==3) {
+  } else if (inputArray.length == 3) {
     let fp = inputArray[1]
     let headerBoolean = inputArray[2] == "with_header"
     return await fetch(
-        "http://localhost:"+ port +"/loadcsv?filename=" + fp + "&header=" + headerBoolean
+        "http://localhost:" + port + "/loadcsv?filename=" + fp + "&header=" + headerBoolean
         //props.hasHeader.toString()
     )
     .then((r) => r.json())
@@ -40,6 +44,16 @@ async function load(inputArray: string[]) {
         return [["File " + fp + " successfully loaded"]]
       }
     })
+  } else if (inputArray.length == 4 && inputArray[3] == "mock") {
+    let file = inputArray[1];
+    let mockdata = mockData.get(file)
+    if (mockdata) {
+      fp = file;
+      return [["File " + fp + " successfully loaded"]]
+    }
+    else {
+      return [["File " + fp + " not found"]]
+    }
   }
   else {
     return [["Not a valid load command"]]
@@ -59,13 +73,35 @@ async function view(inputArray: string[]) {
       }
     });
   }
+  else if (inputArray.length==2 && inputArray[1] == "mock"){
+    if (fp != ""){
+      return mockData.get(fp);
+    }
+    else{
+      return [["Please load a file before trying to view"]]
+    }
+  }
   else {
     return [["Not a valid view command"]]
   }
 }
 
 async function search(inputArray: string[]) {
-  if(inputArray.length==2) {
+  if(inputArray.length>2 && (inputArray[3] == "mock" || inputArray[2] == "mock")) {
+    if (fp != ""){
+      let mock = mockData.get(fp);
+      if (mock) {
+        return [mock[1]];
+      }
+      else{
+        return [["Not a valid filepath"]]
+      }
+    }
+    else{
+      return [["Please load a file before trying to search"]]
+    }
+  }
+  else if(inputArray.length==2) {
     let val = inputArray[1].replace("_", "%20")
     return await fetch("http://localhost:"+ port +"/searchcsv?target=" + val)
     .then(r => r.json()
