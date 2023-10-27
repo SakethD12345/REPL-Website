@@ -119,22 +119,24 @@ export function REPLInput(props: REPLInputProps) {
   }
 
   document.addEventListener("keydown", function(event) {
-    if(event.key === "Enter") {
-      handleSubmit(commandString)
-    }
-    else if(event.metaKey || event.ctrlKey) {
+    if(event.metaKey || event.ctrlKey) {
       if(event.key === "b") {
         handleMode();
       }
       else if(event.key === "i") {
         document.getElementById("command-box")!.focus();
       }
-    }
-    else if(event.key === "ArrowUp") {
-      document.getElementById("command-history")!.scrollBy(0, -40)
-    }
-    else if(event.key === "ArrowDown") {
-      document.getElementById("command-history")!.scrollBy(0, 40)
+      else if(event.key === "Enter") {
+        document.getElementById("submit-button")!.focus()
+      }
+      else if(event.key === "ArrowUp") {
+        document.getElementById("Command History")!.focus()
+        document.getElementById("Command History")!.scrollBy(0, -10)
+      }
+      else if(event.key === "ArrowDown") {
+        document.getElementById("Command History")!.focus()
+        document.getElementById("Command History")!.scrollBy(0, 10)
+      }
     }
   });
 
@@ -148,7 +150,9 @@ export function REPLInput(props: REPLInputProps) {
           ariaLabel={"Command input"}
         />
       </fieldset>
-      <button onClick={() => handleSubmit(commandString)}>Submit</button>
+      <button
+          id="submit-button"
+          onClick={() => handleSubmit(commandString)}>Submit</button>
       <button onClick={() => handleMode()}>
         {isBrief ? "Brief" : "Verbose"}
       </button>
