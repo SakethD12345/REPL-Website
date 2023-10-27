@@ -9,14 +9,10 @@ test.beforeEach(async ({ page }, testInfo) => {
 
 test("on page load, I see an input bar", async ({ page }) => {
   // Notice: http, not https! Our front-end is not set up for HTTPs.
-  await page.goto("http://localhost:8000/");
   await expect(page.getByLabel("Command input")).toBeVisible();
 });
 
 test("after I type into the input box, its text changes", async ({ page }) => {
-  // Step 1: Navigate to a URL
-  await page.goto("http://localhost:8000/");
-
   // Step 2: Interact with the page
   // Locate the element you are looking for
   await page.getByLabel("Command input").click();
@@ -28,19 +24,14 @@ test("after I type into the input box, its text changes", async ({ page }) => {
   await expect(page.getByLabel("Command input")).toHaveValue(mock_input);
 });
 test("on page load, I see a Submit button", async ({ page }) => {
-  await page.goto("http://localhost:8000/");
   await expect(page.getByRole("button", { name: "Submit" })).toBeVisible();
 });
 
 test("on page load, I see a Brief/Verbose button", async ({ page }) => {
-  await page.goto("http://localhost:8000/");
-
   await expect(page.getByRole("button", { name: "Brief" })).toBeVisible();
 });
 
 test("after I click Brief/Verbose button, it switches", async ({ page }) => {
-  await page.goto("http://localhost:8000/");
-
   await expect(page.getByRole("button", { name: "Brief" })).toBeVisible();
   await page.getByRole("button", { name: "Brief" }).click();
   await expect(page.getByRole("button", { name: "Verbose" })).toBeVisible();
@@ -51,7 +42,7 @@ test("after I click Brief/Verbose button, it switches", async ({ page }) => {
 /**
  * This test loads the first filepath with a header
  */
-test("load a simple file with a header", async ({ page }) => {
+test("load a simple mocked file with a header", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page
     .getByLabel("Command input")
@@ -65,7 +56,7 @@ test("load a simple file with a header", async ({ page }) => {
 /**
  * This test loads the second filepath that doesn't have a header
  */
-test("load a simple file without a header", async ({ page }) => {
+test("load a simple mocked file without a header", async ({ page }) => {
   await page.getByLabel("Command input").click();
   await page
     .getByLabel("Command input")

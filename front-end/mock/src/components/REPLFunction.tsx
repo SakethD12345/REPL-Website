@@ -61,6 +61,8 @@ async function load(inputArray: string[]) {
   }
 }
 
+jest
+
 async function view(inputArray: string[]) {
   if (inputArray.length == 1) {
     return await fetch("http://localhost:" + port + "/viewcsv")
