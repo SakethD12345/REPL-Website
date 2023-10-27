@@ -42,11 +42,11 @@ export function REPLInput(props: REPLInputProps) {
         addOutput(result)
       }
       else {
-        props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
+        props.setHistory([...props.history, buildResultTable([["Please enter a valid command"]])])
       }
     }
     else {
-      props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
+      props.setHistory([...props.history, buildResultTable([["Please enter a valid command"]])])
     }
     setCommandString("")
   }
