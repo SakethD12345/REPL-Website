@@ -7,11 +7,14 @@ export interface REPLFunction {
 }
 let port = 3232;
 let fp = "";
-export const REPLFunctionMap = new Map<string, REPLFunction>();
-REPLFunctionMap.set("load_file", load);
-REPLFunctionMap.set("view", view);
-REPLFunctionMap.set("search", search);
-REPLFunctionMap.set("broadband", broadband);
+
+export const REPLFunctionMap = new Map<string, REPLFunction>
+REPLFunctionMap.set("load_file", load)
+REPLFunctionMap.set("view", view)
+REPLFunctionMap.set("search", search)
+REPLFunctionMap.set("broadband", broadband)
+REPLFunctionMap.set("name", name)
+
 async function load(inputArray: string[]) {
   if (inputArray.length == 2) {
     let fp = inputArray[1];
@@ -156,4 +159,9 @@ async function broadband(inputArray: string[]) {
   } else {
     return [["Not a valid broadband command"]];
   }
+}
+
+async function name(inputArray: string[]) {
+  let name = inputArray[1]
+  return [["Hi " + name]]
 }

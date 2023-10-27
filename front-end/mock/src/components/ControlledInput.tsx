@@ -9,11 +9,12 @@ interface ControlledInputProps {
     //   Concretely, this means "a function that sets a state containing a string"
     setValue: Dispatch<SetStateAction<string>>,
     ariaLabel: string
+    onKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void
   }
   
   // Input boxes contain state. We want to make sure React is managing that state,
   //   so we have a special component that wraps the input box.
-  export function ControlledInput({value, setValue, ariaLabel}: ControlledInputProps) {
+  export function ControlledInput({value, setValue, ariaLabel, onKeyPress}: ControlledInputProps) {
     return (
         <input
             type="text"
@@ -23,6 +24,7 @@ interface ControlledInputProps {
             onChange={(ev) => setValue(ev.target.value)}
             aria-label={ariaLabel}
             id="command-box"
+            onKeyPress={onKeyPress}
         />
     );
   }
