@@ -82,7 +82,7 @@ load_file <filepath/filename> without_header
 view
 search <target_value> <column_name/column_index>
 search <target_value>
-broadband <state_name> <county_name>
+broadband <state_name> <county_name>:
 mode (can also just click the button)
 
 The command shortcuts are as follows: 
