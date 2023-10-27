@@ -91,3 +91,9 @@ cmd/ctrl + b: allows you to switch the mode
 cmd/ctrl + ArrowUp: allows you to scroll up in the command history specifically
 cmd/ctrl + ArrowDown: allows you to scroll down in the command history specifically
 Enter: allows you to submit a command
+
+To register and use a new command:
+The command must have a function that is written by the programmer developer that has some sort of
+functionality that is also up to the developer. For example we registered a new fake command called
+name that takes in name [insert_name] and returns hi [name] in the website. The command can be
+registered by setting it in the hashmap using REPLFunctionMap.set("command_name", command_function)
