@@ -24,43 +24,64 @@ search through the CSV files.
 Some key design choices include:
 
 - For accessibility, we decided to use several keyboard shortcuts to allow for the user to not have
-to use a mouse/trackpad at all 
+to use a mouse/trackpad at all. These shortcuts are specified in the How To portion of the README. 
+- Additionally, for magnification the command input box will always be present and partially visible
+even when zoomed in all the way to 500%. There are also separate scroll features for scrolling
+through the entire webpage and just the command history.
 - We used dependency injection by using interfaces for each class to define certain values and
-  setters for them. This injects some dependcy on developers using the program, who may want to
-  change how some components work
+setters for them. This injects some dependency on developers using the program, who may want to
+change how some components work. Additionally, the user can input their commands of choice while
+following the formatting of the REPLFunction interface. 
 - We used mocked data in the form of 2d string arrays to represent parsed CSV files. This allowed
-  us to mock searching, viewing, and loading data
-- For specific search parameters, we returned the the header if it exists along with the first row
-  of data to mock the searching functionality. This is because the back end would actually produce
-  results, so we just had to return something to know it works. See comments for further detail.
+us to mock searching, viewing, and loading data. We did mock testing in addition to back end
+end, integration, and unit testing because the mock testing will work even if the back end/internet
+is down.
+- The user can load a file while specifying with_header or without_header, but if not specified it
+will default to no header. 
+- The user can search with just a target value or with a target value and a column identifier (if
+the file has a header) that is a number or string.
+- For search if you have a target or column identifier that is two words you must use an underscore
+instead of a space (Ex: Rhode Island is Rhode_Island and Santa Clara is Santa_Clara)
 
 # ERRORS/BUGS
 
-We are not aware of any bugs at this point. In the process of making our command line program, we
-dealt with various issues. One was dealing with empty files, specifically being able to view them.
-Additionally we originally built our program to not have ask the user whether or not files have
-headers, but it caused issues down the line for searching. We had to change this to ask the user to
-declare whether the file has header or not when loading.
+One issue that we noticed with playwright testing through the back end was that the fetch calls are
+made simultaneously to different links which causes the tests to all pass sometimes but have a few 
+issues when running it other times. When we run the tests individually on npx playwright --ui they 
+all pass so we know the tests are working. Because of this issue we also did a lot of mock tests 
+that don't rely on the server. We are not aware of any other bugs at this point. However, here 
+are certain choices we made for the sake of simplicity that aren't the best way of dealing with edge
+cases. Empty files that are loaded will simply show empty results when attempted to view. Similarly,
+empty search results will simply show nothing which should hopefully prompt the user to realize 
+their search value either isn't in the file or isn't in the column they specified. 
 
 # TESTS
 
-
+SIDDU ADD HERE
 
 # HOW TO...
 
 How to run tests:
-Run tests by running "npx playwright test" in the terminal
+SIDDU ADD HERE
 
 How to build and run program:
-Program can be run by running npm start in the terminal, and opening the local server link
+To run the server in the background you must go to main and run it which starts the localhost
+server. Program can be run by running npm start in the terminal, and opening the local host link
 provided.
 
 The valid commands are as follows:
+load_file <filepath/filename>
 load_file <filepath/filename> with_header
 load_file <filepath/filename> without_header
 view
-search <column_name/column_index> <target_value>
+search <target_value> <column_name/column_index>
 search <target_value>
-mode
+broadband <state_name> <county_name>
+mode (can also just click the button)
 
-If you don't enter the following commands, the site will prompt you to enter a valid command
+The command shortcuts are as follows: 
+cmd/ctrl + i: allows you to start typing in the command input box
+cmd/ctrl + b: allows you to switch the mode
+cmd/ctrl + ArrowUp: allows you to scroll up in the command history specifically
+cmd/ctrl + ArrowDown: allows you to scroll down in the command history specifically
+Enter: allows you to submit a command
