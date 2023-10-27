@@ -140,6 +140,12 @@ export function REPLInput(props: REPLInputProps) {
     }
   });
 
+  const enterPress = (event: {key: string}) => {
+    if(event.key === "Enter") {
+      handleSubmit(commandString)
+    }
+  }
+
   return (
     <div className="repl-input">
       <fieldset>
@@ -148,6 +154,7 @@ export function REPLInput(props: REPLInputProps) {
           value={commandString}
           setValue={setCommandString}
           ariaLabel={"Command input"}
+          onKeyPress={enterPress}
         />
       </fieldset>
       <button
