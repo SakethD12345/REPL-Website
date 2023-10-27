@@ -51,11 +51,18 @@ export function REPLInput(props: REPLInputProps) {
     setCommandString("")
   }
 
+  /**
+   * This function switches the mode
+   */
   function handleMode() {
     setMode(!isBrief);
     props.setHistory([...props.history, buildResultTableMode([["Mode switched"]])])
   }
 
+  /**
+   * This is a helper for buildResultTable
+   * @param result
+   */
   function buildResultTableHelper(result: string[][]) {
     var tableString = "<table>";
     for (const row of result) {
@@ -83,6 +90,11 @@ export function REPLInput(props: REPLInputProps) {
       return (<div><p>Command: <br></br>{commandString}{" "}</p><p>Output: {returnTable} </p></div>)
     }
   }
+
+  /**
+   * Different resultTable built for when mode is switched
+   * @param result
+   */
   function buildResultTableMode(result: string[][]) {
     var returnTable = buildResultTableHelper(result)
     if(!isBrief) {
@@ -92,6 +104,11 @@ export function REPLInput(props: REPLInputProps) {
       return (<div><p>Command: <br></br>{commandString}{" "}</p><p>Output: {returnTable} </p></div>)
     }
   }
+
+  /**
+   * Adds the output to the history
+   * @param result
+   */
   function addOutput(result: Promise<string[][]>) {
     result
     .then(r => buildResultTable(r))
@@ -118,6 +135,9 @@ export function REPLInput(props: REPLInputProps) {
     }
   }
 
+  /**
+   * These are command shortcuts for the user to use
+   */
   document.addEventListener("keydown", function(event) {
     if(event.metaKey || event.ctrlKey) {
       if(event.key === "b") {
@@ -140,6 +160,10 @@ export function REPLInput(props: REPLInputProps) {
     }
   });
 
+  /**
+   * Helps the user submit by pressing enter
+   * @param event
+   */
   const enterPress = (event: {key: string}) => {
     if(event.key === "Enter") {
       handleSubmit(commandString)

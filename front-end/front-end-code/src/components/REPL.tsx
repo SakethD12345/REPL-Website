@@ -3,6 +3,10 @@ import '../styles/main.css';
 import { REPLHistory } from './REPLHistory';
 import { REPLInput } from './REPLInput';
 
+/**
+ * This function creates the larger REPL program
+ * @constructor
+ */
 export default function REPL() {
   const [history, setHistory] =
       useState<ReactElement[]>([])

@@ -4,10 +4,20 @@ import {ReactElement, useRef} from "react";
 interface REPLHistoryProps{
     history: ReactElement[]
 }
+
+/**
+ * This function deals with the history of the REPL
+ * @param props
+ * @constructor
+ */
 export function REPLHistory(props : REPLHistoryProps) {
     const commandHistory = useRef<HTMLDivElement>(null)
     const index = useRef<number>(-1)
 
+    /**
+     * This deals with pressing up and down for the screenreader
+     * @param event
+     */
     const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
         const historyLength = props.history.length
         let i = index.current;
@@ -24,7 +34,7 @@ export function REPLHistory(props : REPLHistoryProps) {
                 for (let j = 0; j < child.length; j++) {
                     const item = child[j] as HTMLElement;
                     if (item) {
-                        item.focus()
+                        item.setAttribute("aria-selected", j === i ? "true" : "false");
                     }
                 }
             }

@@ -57,12 +57,18 @@ their search value either isn't in the file or isn't in the column they specifie
 
 # TESTS
 
-SIDDU ADD HERE
+We have back-end tests and front-end tests that we adapted from our previous two sprints. For the
+integration tests we used our testing ideas from mock to test relations such as reloaded and
+searching the same file with and without a header etc. We unit tests the commands too along with a 
+command we added called name which says Hi [name] that we added in to test the feature of a 
+programmer developer trying to establish new commands. 
 
 # HOW TO...
 
 How to run tests:
-SIDDU ADD HERE
+To run the back-end tests you can go to the testing files in the back-end folders and click run. To
+run the integration, front-end, and unit tests you can run npx playwright test in the terminal after
+cd to the front-end-code folder. 
 
 How to build and run program:
 To run the server in the background you must go to main and run it which starts the localhost

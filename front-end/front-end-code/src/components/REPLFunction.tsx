@@ -8,6 +8,9 @@ export interface REPLFunction {
 let port = 3232;
 let fp = "";
 
+/**
+ * This map stores the command name to its function
+ */
 export const REPLFunctionMap = new Map<string, REPLFunction>
 REPLFunctionMap.set("load_file", load)
 REPLFunctionMap.set("view", view)
@@ -15,6 +18,10 @@ REPLFunctionMap.set("search", search)
 REPLFunctionMap.set("broadband", broadband)
 REPLFunctionMap.set("name", name)
 
+/**
+ * This function loads a file
+ * @param inputArray
+ */
 async function load(inputArray: string[]) {
   if (inputArray.length == 2) {
     let fp = inputArray[1];
@@ -64,6 +71,10 @@ async function load(inputArray: string[]) {
   }
 }
 
+/**
+ * This function views a file
+ * @param inputArray
+ */
 async function view(inputArray: string[]) {
   if (inputArray.length == 1) {
     return await fetch("http://localhost:" + port + "/viewcsv")
@@ -86,6 +97,10 @@ async function view(inputArray: string[]) {
   }
 }
 
+/**
+ * This function searches a file
+ * @param inputArray
+ */
 async function search(inputArray: string[]) {
   if (
     inputArray.length > 2 &&
