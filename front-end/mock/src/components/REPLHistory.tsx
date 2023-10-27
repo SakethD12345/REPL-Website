@@ -6,7 +6,7 @@ interface REPLHistoryProps{
 }
 export function REPLHistory(props : REPLHistoryProps) {
     return (
-        <div className="repl-history">
+        <div className="repl-history" aria-label="Command History">
             {props.history.map((command, index) => <p>{command}</p>)}
         </div>
     );
