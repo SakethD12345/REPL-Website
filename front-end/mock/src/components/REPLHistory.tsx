@@ -34,6 +34,7 @@ export function REPLHistory(props : REPLHistoryProps) {
     return (
         <div className="repl-history" ref={commandHistory}
              id="Command History"
+             aria-label = "Command History"
              onKeyDown={handleKeyPress} tabIndex={0} role="listbox" aria-live="polite">
             {props.history.map((command, i) =>
                 <p key={i} role="option" aria-selected="false">{command}</p>)}
