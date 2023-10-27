@@ -42,11 +42,11 @@ export function REPLInput(props: REPLInputProps) {
         addOutput(result)
       }
       else {
-        props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
+        props.setHistory([...props.history, buildResultTable([["Please enter a valid command"]])])
       }
     }
     else {
-      props.setHistory([...props.history, buildResultTable([["Not a valid command"]])])
+      props.setHistory([...props.history, buildResultTable([["Please enter a valid command"]])])
     }
     setCommandString("")
   }
@@ -119,18 +119,32 @@ export function REPLInput(props: REPLInputProps) {
   }
 
   document.addEventListener("keydown", function(event) {
-    if(event.key === "Enter") {
-      handleSubmit(commandString)
-    }
-    else if(event.metaKey || event.ctrlKey) {
+    if(event.metaKey || event.ctrlKey) {
       if(event.key === "b") {
         handleMode();
       }
       else if(event.key === "i") {
         document.getElementById("command-box")!.focus();
       }
+      else if(event.key === "Enter") {
+        document.getElementById("submit-button")!.focus()
+      }
+      else if(event.key === "ArrowUp") {
+        document.getElementById("Command History")!.focus()
+        document.getElementById("Command History")!.scrollBy(0, -10)
+      }
+      else if(event.key === "ArrowDown") {
+        document.getElementById("Command History")!.focus()
+        document.getElementById("Command History")!.scrollBy(0, 10)
+      }
     }
   });
+
+  const enterPress = (event: {key: string}) => {
+    if(event.key === "Enter") {
+      handleSubmit(commandString)
+    }
+  }
 
   return (
     <div className="repl-input">
@@ -140,9 +154,12 @@ export function REPLInput(props: REPLInputProps) {
           value={commandString}
           setValue={setCommandString}
           ariaLabel={"Command input"}
+          onKeyPress={enterPress}
         />
       </fieldset>
-      <button onClick={() => handleSubmit(commandString)}>Submit</button>
+      <button
+          id="submit-button"
+          onClick={() => handleSubmit(commandString)}>Submit</button>
       <button onClick={() => handleMode()}>
         {isBrief ? "Brief" : "Verbose"}
       </button>
