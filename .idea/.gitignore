@@ -8,8 +8,8 @@
 /dataSources.local.xml
 
 #front-end
-front-end/node_modules/
-front-end/front-end-code/node_modules/
+front-end/front-end-code/node_modules
+front-end/node_modules
 .DS_Store
 front-end/front-end-code/test-results/
 front-end/front-end-code/playwright-report/

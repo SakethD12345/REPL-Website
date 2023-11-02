@@ -245,4 +245,25 @@ public class TestCSVHandler {
         }
         assertFalse(exceptionThrown);
     }
+    /**
+     * These are new tests for testing jsonHandle
+     */
+    @Test
+    public void testJsonHandler() throws IOException {
+        String json = "{\"name\": \"Alice\", \"age\": 28}";
+        LoadHandler loadHandler = new LoadHandler();
+        Map<String, Object> jsonMap = loadHandler.handleJSON(json);
+        assertEquals("Alice", jsonMap.get("name"));
+    }
+    /**
+     * These are new tests for testing jsonHandle
+     */
+    @Test
+    public void testJsonHandler2() throws IOException {
+        String json = "{\"name\": \"Alice\", \"age\": 28}";
+        LoadHandler loadHandler = new LoadHandler();
+        Map<String, Object> jsonMap = loadHandler.handleJSON(json);
+        jsonMap.put("city", "Wonderland");
+        assertEquals("Wonderland", jsonMap.get("city"));
+    }
 }

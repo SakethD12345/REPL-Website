@@ -70,9 +70,7 @@ public class CSVParser<T> {
                     item = item.replaceAll(",", "");
                     items.set(i, item);
                     i++;
-
                 }
-
                 T row = this.rowCreator.create(items);
                 parsed.add(row);
             }

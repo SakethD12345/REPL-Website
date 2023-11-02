@@ -7,4 +7,14 @@
 /dataSources/
 /dataSources.local.xml
 
-target
+#front-end
+front-end-code/node_modules
+node_modules
+.DS_Store
+front-end/front-end-code/test-results/
+front-end/front-end-code/playwright-report/
+
+#back-end
+back-end/target/
+
+

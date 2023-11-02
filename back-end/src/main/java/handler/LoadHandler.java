@@ -89,4 +89,12 @@ public class LoadHandler implements Route {
             return adapter.toJson(responseMap);
         }
     }
+
+    public Map<String, Object> handleJSON(String filename) throws IOException {
+        Moshi moshi = new Moshi.Builder().build();
+        Type mapStringObject = Types.newParameterizedType(Map.class, String.class, Object.class);
+        JsonAdapter<Map<String, Object>> adapter = moshi.adapter(mapStringObject);
+        Map<String, Object> responseMap = adapter.fromJson(filename);
+        return responseMap;
+    }
 }
